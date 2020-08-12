@@ -1,16 +1,43 @@
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 import './App.css';
-import NavBar from './components/layouts/Navbar';
-import Users from './components/users/Users';
+import Github from './containers/Github';
+import {BrowserRouter as Router,Route,Switch} from 'react-router-dom';
+import About from './components/layouts/pages/About';
+import axios from 'axios';
+import User from './components/users/user/User';
+
 
 function App() {
+  const [user,setUser] = useState(null);
+  const [loading,setLoading] = useState(false)
+
+const getUser = async (name)=>{
+  setLoading(true)
+  const result = await axios.get(`https://api.github.com/users/${name}?client_id=
+    ${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=
+    ${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`);
+    console.log(result);
+    setUser(result.data);
+    setLoading(false);
+}
+
   return (
-    <div className="App">
-      <NavBar title="Github App" />
-      <div className="container">
-        <Users />
+    <Router>
+      <div className="App">
+        <Switch>
+          <Route exact path="/user/:login"
+            render={(props)=>(<User {...props}
+            getUser={getUser}
+            user={user}
+            loading={loading}
+             />)}
+          />
+          <Route path="/about" exact component={About} />
+          <Route path="/" exact component={Github} />
+        </Switch>
+
       </div>
-    </div>
+    </Router>
   );
 }
 
