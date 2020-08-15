@@ -1,5 +1,5 @@
 import React from 'react';
-import NavBar from '../components/layouts/Navbar';
+// import NavBar from '../components/layouts/Navbar';
 import Users from '../components/users/Users';
 import Search from '../components/users/Search';
 import axios from 'axios';
@@ -42,7 +42,7 @@ class Github extends React.Component {
    this.setState({alert:{msg,type}});
    setTimeout(()=>{
      this.setState({alert:null})
-   },3000)
+   },5000)
  }
 
 
@@ -51,8 +51,6 @@ class Github extends React.Component {
   render () {
 
       return(
-        <React.Fragment>
-          <NavBar />
           <div className="container">
             <Alert alert={this.state.alert} />
             <Search searchUser={this.searchUsers}
@@ -64,7 +62,6 @@ class Github extends React.Component {
               loading={this.state.loading}
             />
           </div>
-        </React.Fragment>
       )
   }
 }

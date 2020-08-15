@@ -1,10 +1,11 @@
 import React,{useState,useEffect} from 'react';
 import './App.css';
 import Github from './containers/Github';
-import {BrowserRouter as Router,Route,Switch} from 'react-router-dom';
+import {Route,Switch} from 'react-router-dom';
 import About from './components/layouts/pages/About';
 import axios from 'axios';
 import User from './components/users/user/User';
+import NavBar from './components/layouts/Navbar';
 
 
 function App() {
@@ -22,9 +23,11 @@ const getUser = async (name)=>{
 }
 
   return (
-    <Router>
+
       <div className="App">
+        <NavBar />
         <Switch>
+          <Route path="/" exact component={Github} />
           <Route exact path="/user/:login"
             render={(props)=>(<User {...props}
             getUser={getUser}
@@ -33,11 +36,10 @@ const getUser = async (name)=>{
              />)}
           />
           <Route path="/about" exact component={About} />
-          <Route path="/" exact component={Github} />
+
         </Switch>
 
       </div>
-    </Router>
   );
 }
 
