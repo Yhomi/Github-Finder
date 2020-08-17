@@ -8,7 +8,7 @@ import Alert from '../components/layouts/Alert/Alert';
 import {Switch, Route} from 'react-router-dom';
 import About from '../components/layouts/pages/About';
 import '../App.css';
-
+import NotFound from '../components/layouts/pages/NotFound';
 
 
 class Github extends Component {
@@ -98,6 +98,7 @@ getUserRepos = async(name)=>{
                     repos={this.state.repos}
                     loading={this.state.loading} />
                 )} />
+              <Route component={NotFound} />
             </Switch>
 
           </div>
