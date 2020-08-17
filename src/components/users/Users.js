@@ -1,12 +1,14 @@
-import React from 'react';
+import React,{useContext} from 'react';
 import UserItem from './UserItem';
 import Spinner from '../layouts/spinner/spinner';
-
+import GithubContext from '../../context/github/githubContext';
 
 
 const Users = props => {
 
-    const {loading,users} = props;
+    // const {loading,users} = props;
+    const githubContext = useContext(GithubContext);
+    const {loading,users} = githubContext
     let userItem
     if(loading){
       userItem =  <Spinner />

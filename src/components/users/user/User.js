@@ -1,14 +1,23 @@
-import React,{Fragment} from 'react';
+import React,{Fragment,useEffect,useContext} from 'react';
 import Spinner from '../../layouts/spinner/spinner';
 import {Link} from 'react-router-dom';
 import Repos from '../../Repos/Repos';
+import GithubContext from '../../../context/github/githubContext';
 
-class User extends React.Component {
-  componentDidMount(){
-    this.props.getUser(this.props.match.params.login)
-    this.props.getUserRepos(this.props.match.params.login)
-  }
-  render () {
+const User = props=>{
+  // componentDidMount(){
+  //   this.props.getUser(this.props.match.params.login)
+  //   this.props.getUserRepos(this.props.match.params.login)
+  // }
+  useEffect(()=>{
+    githubContext.getUser(props.match.params.login);
+    githubContext.getUserRepos(props.match.params.login);
+     // eslint-disable-next-line
+  },[]);
+
+  const githubContext = useContext(GithubContext);
+  const {user,repos,loading} = githubContext;
+
     const {
       name,
       avatar_url,
@@ -23,9 +32,8 @@ class User extends React.Component {
       public_repos,
       public_gists,
       hireable
-    } = this.props.user;
-    const {loading,repos} = this.props
-    console.log(this.props.user);
+    } = user;
+
     if(loading) {
       return <Spinner/>
     }
@@ -80,10 +88,10 @@ class User extends React.Component {
             <div className="badge badge-light">Public Repos: {public_repos}</div>
             <div className="badge badge-dark">Public Gists: {public_gists}</div>
           </div>
-          <Repos repos={repos} />
+          <Repos />
       </Fragment>
     )
-  }
+
 }
 
 export default User;

@@ -1,44 +1,44 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React,{useState,useContext} from 'react';
+import GithubContext from '../../context/github/githubContext';
+import AlertContext from '../../context/alert/alertContext';
 
-class Search extends React.Component {
-  state = {
-    text:''
-  }
-  static propTypes ={
-    searchUser:PropTypes.func.isRequired,
-    clearUser:PropTypes.func.isRequired,
-    showClear:PropTypes.bool.isRequired
+const Search = props=> {
+
+  const [text,setText] = useState('');
+
+  const githubContext = useContext(GithubContext);
+  const alertContext = useContext(AlertContext);
+
+
+  const changeHandler = (e)=>{
+    setText(e.target.value)
   }
 
-  changeHandler = (e)=>{
-    this.setState({[e.target.name]:e.target.value})
-  }
-
-  submitHandler = (e) =>{
+  const submitHandler = (e) =>{
     e.preventDefault();
-    if(this.state.text.trim() === ""){
-      this.props.setAlert("Please enter something",'danger');
+    if(text.trim() === ""){
+      alertContext.setAlertMsg("Please enter something",'danger');
     }else{
-      this.props.searchUser(this.state.text);
-      this.setState({text:""});
+      // props.searchUser(text);
+      githubContext.searchUsers(text)
+      setText('')
     }
     // console.log(this.state.text);
 
   }
 
-  render () {
     return(
       <div>
-          <form className="form" onSubmit={this.submitHandler}>
-            <input type="text" placeholder="Search Users..." name="text" value={this.state.text} onChange={this.changeHandler} />
+          <form className="form" onSubmit={submitHandler}>
+            <input type="text" placeholder="Search Users..." value={text} onChange={changeHandler} />
             <input type="submit" value="Search" className="btn btn-dark btn-block" />
           </form>
-          {this.props.showClear ? <button className="btn btn-light btn-block" onClick={this.props.clearUser}>Clear</button> : null}
+          {githubContext.users.length > 0 ? <button className="btn btn-light btn-block" onClick={githubContext.clearUsers}>Clear</button> : null}
 
       </div>
     )
-  }
+
 }
+
 
 export default Search;
